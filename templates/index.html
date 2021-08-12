@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Car Licence Plate Detection</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="static/style.css">
+  </head>
+  <body>
+    <div class="row d-flex justify-content-center mt-100">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Upload Car Photo</h5>
+            </div>
+            <div class="card-block">
+                <form action="uploadFile" class="dropzone dz-clickable" method="post" enctype="multipart/form-data">
+                  <input type="file" name="file" value="">
+                    <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
+                    <div class="text-center m-t-20">
+                        <button class="btn btn-primary" type="submit" value="Upload">Upload Now</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+  </body>
+</html>
