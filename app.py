@@ -61,7 +61,7 @@ def extractLicenceNo(image):
 
         licencePlateNo = response['TextDetections'][0]['DetectedText']
 
-        vehicleInfo = requests.get("http://www.regcheck.org.uk/api/reg.asmx/CheckIndia?RegistrationNumber={}&username=hemendra005".format(licencePlateNo))
+        vehicleInfo = requests.get("http://www.regcheck.org.uk/api/reg.asmx/CheckIndia?RegistrationNumber={}&username=abhay05".format(licencePlateNo))
         data = xmltodict.parse(vehicleInfo.content)
         jdata = json.dumps(data)
         df = json.loads(jdata)
@@ -85,8 +85,7 @@ def allowed_file(filename):
 @app.route('/output/<filename>')
 def output(filename):
     licenceDetails = extractLicenceNo(filename)
-    content = request.json
-    return jsonify()
+    return licenceDetails[0]
 
 @app.route('/')
 def home():
