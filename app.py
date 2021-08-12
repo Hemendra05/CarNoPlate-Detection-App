@@ -33,13 +33,13 @@ def extractLicenceNo(image):
     licenceDetails = []
 
     # Create function to crop only the car plate region itself
-    car = licensePlateModel.detectMultiScale(image,scaleFactor=1.1, minNeighbors=3)
+    car = licensePlateModel.detectMultiScale(carImgRBG,scaleFactor=1.1, minNeighbors=3)
     for licencePlate in car:
         x=licencePlate[0]
         y=licencePlate[1]
         w=licencePlate[2]
         h=licencePlate[3]
-        licensePlate = image[y:y+h ,x:x+w] # Adjusted to extract specific region of interest i.e. car license plate
+        licensePlate = carImgRBG[y:y+h ,x:x+w] # Adjusted to extract specific region of interest i.e. car license plate
         # Enlarge image for further processing later on
         width = int(licensePlate.shape[1] * 2)
         height = int(licensePlate.shape[0] * 2)
@@ -59,7 +59,7 @@ def extractLicenceNo(image):
             }
         )
 
-        licensePlateNo = response['TextDetections'][0]['DetectedText']
+        licencePlateNo = response['TextDetections'][0]['DetectedText']
 
         vehicleInfo = requests.get("http://www.regcheck.org.uk/api/reg.asmx/CheckIndia?RegistrationNumber={}&username=hemendra005".format(licencePlateNo))
         data = xmltodict.parse(vehicleInfo.content)
@@ -68,7 +68,7 @@ def extractLicenceNo(image):
         df1 = json.loads(df['Vehicle']['vehicleJson'])
         licenceDetails.append(df1)
 
-        licenceDetails.append(licensePlateNo)
+        licenceDetails.append(licencePlateNo)
     return licenceDetails
 
 
@@ -82,9 +82,11 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/index/<id>')
-def dfs(id):
-    return id
+@app.route('/output/<filename>')
+def output(filename):
+    licenceDetails = extractLicenceNo(filename)
+    content = request.json
+    return jsonify()
 
 @app.route('/')
 def home():
@@ -107,7 +109,7 @@ def uploadFile():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(filename)
-            return "Saved"
+            return redirect(f"/output/{filename}")
     return "Successful"
 
 
